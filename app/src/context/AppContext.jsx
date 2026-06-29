@@ -193,6 +193,18 @@ export function AppProvider({ children }) {
       })
     );
   }, []);
+  const addComment = useCallback((postId, comment) => {
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              comments: [...(post.comments || []), comment],
+            }
+          : post
+      )
+    );
+  }, []);
 
   const deletePost = useCallback(
     (postId, requesterId) => {
@@ -236,6 +248,7 @@ export function AppProvider({ children }) {
         messageReadTimestamps,
         createPost,
         toggleLike,
+        addComment,
         deletePost,
         getPendingMatches,
       }}
