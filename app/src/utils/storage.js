@@ -1,3 +1,4 @@
+import seedPosts from "../data/seedPosts";
 export const KEYS = {
   USERS: "danskbuddy_users",
   CURRENT: "danskbuddy_current",
