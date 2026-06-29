@@ -39,6 +39,7 @@ function timeAgo(date: string) {
 export default function PostCard({ post }: Props) {
   const { toggleLike, addComment, users } = useApp() as any;
   const { user } = useAuth() as any;
+  const author = users.find((u: any) => String(u.id) === String(post.authorId));
   const [text, setText] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [showLikes, setShowLikes] = useState(false);
@@ -80,7 +81,7 @@ export default function PostCard({ post }: Props) {
             <h4 className="m-0 text-[0.95rem] font-bold text-foreground">
               {post.authorName}
             </h4>
-            <LevelBadge level="B1" />
+            <LevelBadge level={author?.danishLevel ?? "native"} />
           </div>
           <span className="text-[0.8rem] text-neutral">
             {timeAgo(post.createdAt)}
