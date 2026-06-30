@@ -1,3 +1,4 @@
+import seedPosts from "../data/seedPosts";
 export const KEYS = {
   USERS: "danskbuddy_users",
   CURRENT: "danskbuddy_current",
@@ -52,7 +53,15 @@ export function saveMessages(messages) {
 }
 
 export function getPosts() {
-  return getItem(KEYS.POSTS) || [];
+  const posts = getItem(KEYS.POSTS);
+
+  if (posts && posts.length > 0) {
+    return posts;
+  }
+
+  setItem(KEYS.POSTS, seedPosts);
+
+  return seedPosts;
 }
 export function savePosts(posts) {
   setItem(KEYS.POSTS, posts);

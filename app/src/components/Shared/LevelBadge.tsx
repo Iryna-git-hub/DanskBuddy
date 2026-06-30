@@ -1,4 +1,4 @@
-export type Level = "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "native";
+export type Level = "a1" | "a2" | "b1" | "b2" | "native";
 
 interface Props {
   level: Level;
@@ -6,17 +6,16 @@ interface Props {
 
 const BASE =
   "inline-flex items-center justify-center px-[10px] py-[5px] rounded-sm text-xs font-extrabold";
-
 const VARIANT: Record<Level, string> = {
-  A1: "bg-secondary-light text-secondary-dark",
-  A2: "bg-secondary-light text-secondary-dark",
-  B1: "bg-primary-light text-primary",
-  B2: "bg-primary-light text-primary",
-  C1: "bg-primary-pale text-primary-dark",
-  C2: "bg-primary-pale text-primary-dark",
-  native: "bg-foreground text-background",
+  a1: "bg-secondary-light text-secondary-dark",
+  a2: "bg-secondary-light text-secondary-dark",
+  b1: "bg-primary-light text-primary",
+  b2: "bg-primary-light text-primary",
+  native: "bg-primary-pale text-primary-dark",
 };
 
 export default function LevelBadge({ level }: Props) {
-  return <span className={`${BASE} ${VARIANT[level]}`}>{level}</span>;
+  const displayLevel = level === "native" ? "Native" : level.toUpperCase();
+
+  return <span className={`${BASE} ${VARIANT[level]}`}>{displayLevel}</span>;
 }
