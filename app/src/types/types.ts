@@ -1,20 +1,16 @@
-export type UserRole = "learner" | "native";
-
-export type DanishLevel = "a1" | "a2" | "b1" | "b2" | "native";
+export type UserRole = "learner" | "native" | "both";
 
 export type User = {
   id: string;
   email?: string;
   name: string;
   avatar?: string;
-  avatarBgColor?: string;
-  age?: number;
   city?: string;
   role?: UserRole;
-  danishLevel?: DanishLevel;
+  danishLevel?: string;
   nativeLanguage?: string;
-  learningGoals?: string;
-  interests?: string[];
+  learningGoals?: string[];
+  topics?: string[];
   availability?: string[];
   bio?: string;
   createdAt?: string;
