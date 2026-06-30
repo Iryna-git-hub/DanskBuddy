@@ -14,11 +14,14 @@ import Login from "./components/Auth/Login.jsx";
 import DesignSystem from "./components/DesignSystem/DesignSystem.jsx";
 import MatchesList from "./components/Matches/MatchesList.jsx";
 import FeedPage from "./components/Feed/FeedPage.tsx";
+import ChatWindow from "./components/Messages/ChatWindow.jsx";
 import MessagesPage from "./components/Messages/MessagesPage.jsx";
 import BrowsePage from "./components/Browse/BrowsePage.tsx";
 import Register from "./components/Auth/Register.jsx";
 import MyProfile from "./components/MyProfile/MyProfile.tsx";
+import PublicProfile from "./components/PublicProfile/PublicProfile.tsx";
 import "./main.css";
+
 function Placeholder({ name }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-gray-400">
@@ -70,7 +73,7 @@ const router = createBrowserRouter([
         path: "/messages/:userId",
         element: (
           <ProtectedRoute>
-            <Placeholder name="Chat" />
+            <ChatWindow />
           </ProtectedRoute>
         ),
       },
@@ -94,7 +97,7 @@ const router = createBrowserRouter([
         path: "/profile/:id",
         element: (
           <ProtectedRoute>
-            <Placeholder name="Public Profile" />
+            <PublicProfile />
           </ProtectedRoute>
         ),
       },
