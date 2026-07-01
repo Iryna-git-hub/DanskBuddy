@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { useAuth } from "../../context/AuthContext";
@@ -11,9 +11,22 @@ import { avatarColor } from "../../utils/avatarColor";
 export default function ChatWindow() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { users, sendMessage, getConversation } = useApp();
+
+  const {
+    users,
+    sendMessage,
+    getConversation,
+    markMessagesAsRead,
+    buildConversationId,
+  } = useApp();
+
   const { userId } = useParams();
   const [text, setText] = useState("");
+  useEffect(() => {
+    if (user && userId) {
+      markMessagesAsRead(buildConversationId(user.id, userId));
+    }
+  }, [userId, markMessagesAsRead, buildConversationId]);
 
   if (!user) return <Navigate to="/login" />;
 
