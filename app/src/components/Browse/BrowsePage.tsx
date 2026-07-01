@@ -395,6 +395,16 @@ function BrowsePage() {
                   onClose={() => setOpenDropdown("")}
                 />
               </div>
+
+              <div className="shrink-0">
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="cursor-pointer rounded-full bg-[#ECE6DD] px-5 py-2.5 text-sm font-semibold text-[#6E665C] transition hover:bg-[#F6F0E8] focus:outline-none focus:ring-4 focus:ring-[#FDEAEC] active:translate-y-px"
+                >
+                  Nulstil filtre
+                </button>
+              </div>
             </div>
 
             <p className="hidden shrink-0 text-sm font-semibold text-neutral-light md:block">
