@@ -26,7 +26,7 @@ function getRoleLabel(role: User["role"]) {
     return "Not added yet";
   }
 
-  if (role === "native") {
+  if (role.value === "native") {
     return "Native speaker";
   }
 
@@ -254,7 +254,7 @@ function PublicProfile() {
         <div className="mt-5 grid gap-5 lg:grid-cols-3">
           <ProfileListSection
             title="Interests"
-            items={profileUser.interests}
+            items={profileUser.topics}
             emptyMessage="No interests added yet."
           />
 
