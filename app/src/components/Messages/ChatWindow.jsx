@@ -1,19 +1,32 @@
-import { useState } from "react";
-import { useParams, Navigate, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { useAuth } from "../../context/AuthContext";
 import MessageBubble from "./MessageBubble";
 import Avatar from "../Shared/Avatar";
-import { Phone, Video } from "lucide-react";
+import { ChevronLeft, Phone, Video } from "lucide-react";
 import "./Messages.css";
 import { avatarColor } from "../../utils/avatarColor";
-
+import { getInitials } from "../../utils/getInitials";
 export default function ChatWindow() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { users, sendMessage, getConversation } = useApp();
+
+  const {
+    users,
+    sendMessage,
+    getConversation,
+    markMessagesAsRead,
+    buildConversationId,
+  } = useApp();
+
   const { userId } = useParams();
   const [text, setText] = useState("");
+  useEffect(() => {
+    if (user && userId) {
+      markMessagesAsRead(buildConversationId(user.id, userId));
+    }
+  }, [userId, markMessagesAsRead, buildConversationId]);
 
   if (!user) return <Navigate to="/login" />;
 
@@ -21,11 +34,7 @@ export default function ChatWindow() {
   if (!otherUser) return <p>User not found</p>;
 
   const messages = getConversation(user.id, String(userId)) || [];
-
-  const levelLabel =
-    otherUser.danishLevel === "native"
-      ? "native"
-      : (otherUser.danishLevel || "a1").toUpperCase();
+  const levelLabel = otherUser.danishLevel || "A1";
 
   const handleSend = () => {
     const message = text.trim();
@@ -42,17 +51,13 @@ export default function ChatWindow() {
           type="button"
           className="back-button md:hidden"
           onClick={() => navigate("/messages")}
+          aria-label="Go back"
         >
-          ←
+          <ChevronLeft size={24} color="black" />
         </button>
 
         <Avatar
-          initials={otherUser.name
-            .split(" ")
-            .map((p) => p[0])
-            .join("")
-            .slice(0, 2)
-            .toUpperCase()}
+          initials={getInitials(otherUser.name)}
           online={true}
           size="lg"
           color={avatarColor(otherUser.id)}
@@ -67,8 +72,12 @@ export default function ChatWindow() {
           </h3>
           <div className="flex items-center gap-1 text-[0.78rem] mt-0.5">
             <span className="text-success">Online</span>
-            <span className="text-success">·</span>
-            <span className="text-success">{otherUser.role}</span>
+            {otherUser.role?.label && (
+              <>
+                <span className="text-success">·</span>
+                <span className="text-success">{otherUser.role.value}</span>
+              </>
+            )}
             <span className="text-success">·</span>
             <span className="text-success">{levelLabel}</span>
           </div>

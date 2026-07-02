@@ -147,9 +147,9 @@ function toProfileCardUser(user: User): ProfileCardUser {
     name: user.name,
     avatar: user.avatar ?? "",
     city: user.city ?? "Unknown city",
-    role: user.role ?? "learner",
+    role: user.role?.value ?? "learner",
     danishLevel: user.danishLevel ?? "Not selected",
-    topics: user.topics ?? [],
+    interests: user.topics ?? [],
     bio: user.bio ?? "No bio yet.",
   };
 }
@@ -221,7 +221,7 @@ function BrowsePage() {
     return availableUsers.filter((profileUser) => {
       const searchMatches = matchesSearch(profileUser, searchTerm);
       const cityMatches = matchesFilter(profileUser.city, cityFilter);
-      const roleMatches = matchesFilter(profileUser.role, roleFilter);
+      const roleMatches = matchesFilter(profileUser.role?.value, roleFilter);
       const danishLevelMatches = matchesFilter(
         profileUser.danishLevel,
         danishLevelFilter
