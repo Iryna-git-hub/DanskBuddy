@@ -96,20 +96,24 @@ export default function Layout() {
             {user?.avatar ? (
               <span className="text-xl">{user.avatar}</span>
             ) : (
-              <div
-                className="w-9 h-9 rounded-full text-white flex items-center justify-center text-sm font-bold shrink-0"
-                style={{ background: avatarColor(user?.id ?? "") }}
-              >
-                {getInitials(user?.name ?? "")}
+              <div className="w-8 h-8 rounded-full bg-[#E63946] text-white flex items-center justify-center text-sm font-bold">
+                {user?.name
+                  ?.trim()
+                  .split(" ")
+                  .slice(0, 2)
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()}
               </div>
             )}
             <div className="flex flex-col leading-tight flex-1 min-w-0 text-left">
               <span className="font-semibold text-gray-900 truncate">
                 {user?.name}
               </span>
-              <span className="text-xs text-gray-400 truncate">
-                {user?.role?.value || "Learner"}
-                {user?.danishLevel ? ` · ${user.danishLevel}` : ""}
+              <span className="text-xs text-gray-400 capitalize">
+                {typeof user?.role === "string"
+                  ? user.role
+                  : user?.role?.label || "Learner"}
               </span>
             </div>
             <MoreVertical size={16} className="text-gray-400 shrink-0" />
@@ -130,57 +134,72 @@ export default function Layout() {
       </aside>
 
       <div className="flex flex-col flex-1 min-h-screen">
-        <main
-          className={
-            isChatRoute ? "flex-1 min-h-0 flex flex-col" : "flex-1 p-6 md:p-8"
-          }
-        >
+        {/* Mobile top bar */}
+        <div className="md:hidden bg-white border-b border-gray-100 h-14 flex items-center justify-between px-4 sticky top-0 z-50">
+          <NavLink
+            to="/browse"
+            className="flex items-center gap-2 no-underline"
+          >
+            <img
+              src="/icons/dansklogo.png"
+              alt="DanskBuddy logo"
+              className="w-10 h-10"
+            />
+            <span className="text-base tracking-tight">
+              <span className="font-extrabold text-[#E63946]">dansk</span>
+              <span className="font-extrabold text-[#F4A261]">buddy</span>
+            </span>
+          </NavLink>
+          <div className="w-8 h-8 rounded-full bg-[#E63946] text-white flex items-center justify-center text-sm font-bold">
+            {user?.name
+              ?.trim()
+              .split(" ")
+              .slice(0, 2)
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()}
+          </div>
+        </div>
+
+        <main className="flex-1 p-6 md:p-8">
           <Outlet />
         </main>
-
-        {!isChatRoute && (
-          <footer className="text-center text-sm text-gray-400 py-4 border-t bg-white">
-            © 2026 DanskBuddy · Find your Danish conversation partner 🇩🇰
-          </footer>
-        )}
       </div>
 
       {/* ── BOTTOM TAB BAR — mobile only ── */}
-      {!isChatDetailRoute && (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50 px-2">
-          {navLinks
-            .filter(({ to }) =>
-              [
-                "/feed",
-                "/browse",
-                "/matches",
-                "/messages",
-                "/profile/me",
-              ].includes(to)
-            )
-            .map(({ to, label, icon: Icon, badge }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) =>
-                  `relative flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-xs transition-colors no-underline ${
-                    isActive
-                      ? "text-[#E63946]"
-                      : "text-gray-400 hover:text-gray-700"
-                  }`
-                }
-              >
-                <Icon size={22} />
-                {label}
-                {badge > 0 && (
-                  <span className="absolute top-0 right-1 bg-[#E63946] text-white text-xs font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-0.5">
-                    {badge}
-                  </span>
-                )}
-              </NavLink>
-            ))}
-        </nav>
-      )}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50 px-2">
+        {navLinks
+          .filter(({ to }) =>
+            [
+              "/feed",
+              "/browse",
+              "/matches",
+              "/messages",
+              "/profile/me",
+            ].includes(to)
+          )
+          .map(({ to, label, icon: Icon, badge }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `relative flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-xs transition-colors no-underline ${
+                  isActive
+                    ? "text-[#E63946]"
+                    : "text-gray-400 hover:text-gray-700"
+                }`
+              }
+            >
+              <Icon size={22} />
+              {label}
+              {badge > 0 && (
+                <span className="absolute top-0 right-1 bg-[#E63946] text-white text-xs font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-0.5">
+                  {badge}
+                </span>
+              )}
+            </NavLink>
+          ))}
+      </nav>
 
       {/* Spacer for mobile tab bar */}
       {!isChatDetailRoute && <div className="md:hidden h-16" />}
