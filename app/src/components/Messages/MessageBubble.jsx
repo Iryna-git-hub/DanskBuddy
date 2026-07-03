@@ -32,18 +32,30 @@ export default function MessageBubble({ message, isMine }) {
   }
 
   return (
-    <div className={isMine ? "flex flex-col items-end" : "flex flex-col items-start"}>
+    <div
+      className={
+        isMine ? "flex flex-col items-end" : "flex flex-col items-start"
+      }
+    >
       <div
-        className={`px-4 py-2 rounded-2xl max-w-[70%] text-sm ${
-          isMine ? "bg-[#E63946] text-white" : "bg-white text-gray-800 shadow-sm"
+        className={`px-4 pt-2.5 pb-2 max-w-[70%] text-sm ${
+          isMine
+            ? "bg-[#E63946] text-white rounded-t-2xl rounded-bl-2xl rounded-br-sm"
+            : "bg-white text-gray-800 shadow-sm rounded-t-2xl rounded-br-2xl rounded-bl-sm"
         }`}
       >
-        <div>{isTranslated ? translatedText : message?.text}</div>
+        <div className="pr-2">
+          {isTranslated ? translatedText : message?.text}
+        </div>
 
         {message?.createdAt && (
-          <span className="text-xs opacity-60">
+          <div
+            className={`text-[11px] text-right mt-1 ${
+              isMine ? "text-white/70" : "text-gray-400"
+            }`}
+          >
             {formatMessageTime(message.createdAt)}
-          </span>
+          </div>
         )}
       </div>
       <button
